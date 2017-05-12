@@ -51,7 +51,9 @@ module PPTX
           <a:p xmlns:a='http://schemas.openxmlformats.org/drawingml/2006/main'>
               <a:pPr/>
               <a:r>
-                  <a:rPr lang='en-US' smtClean='0'/>
+                  <a:rPr lang='en-US' smtClean='0'>
+                     <a:latin/>
+                  </a:rPr>
                   <a:t></a:t>
               </a:r>
               <a:endParaRPr lang='en-US'/>
@@ -77,10 +79,16 @@ module PPTX
         formatting = formatting.dup
         color = formatting.delete(:color)
         align = formatting.delete(:align)
+        typeface = formatting.delete(:typeface)
 
         if align
           p_properties = paragraph.xpath('./a:p/a:pPr', a: DRAWING_NS).first
           p_properties['algn'] = align
+        end
+        
+        if typeface
+          p_properties = paragraph.xpath('./a:p/a:r/a:rPr/a:latin', a: DRAWING_NS).first
+          p_properties['typeface'] = typeface
         end
 
         run_properties = paragraph.xpath('.//a:rPr', a: DRAWING_NS).first
