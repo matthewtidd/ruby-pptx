@@ -41,6 +41,18 @@ module PPTX
           node.xpath('.//a:srgbClr', a: DRAWING_NS).first['val'] = rgb_color
         end
       end
+
+      def build_bullet(bullet = "•", color = "000000")
+        bullet = "•" unless bullet.class == String
+        bullet_xml = """
+        <a:buClr>
+          <a:srgbClr val='#{color}' />
+        </a:buClr>
+        <a:buChar char='#{bullet}' />
+        """
+
+        Nokogiri::XML::DocumentFragment.parse(bullet_xml)
+      end
     end
   end
 end

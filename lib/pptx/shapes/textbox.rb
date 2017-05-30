@@ -80,15 +80,17 @@ module PPTX
         color = formatting.delete(:color)
         align = formatting.delete(:align)
         typeface = formatting.delete(:typeface)
+        bullet = formatting.delete(:bullet)
+        bullet_color = formatting.delete(:bullet_color) rescue nil
 
+        p_properties = paragraph.xpath('./a:p/a:pPr', a: DRAWING_NS).first
         if align
-          p_properties = paragraph.xpath('./a:p/a:pPr', a: DRAWING_NS).first
           p_properties['algn'] = align
         end
-        
+
         if typeface
-          p_properties = paragraph.xpath('./a:p/a:r/a:rPr/a:latin', a: DRAWING_NS).first
-          p_properties['typeface'] = typeface
+          latin = paragraph.xpath('./a:p/a:r/a:rPr/a:latin', a: DRAWING_NS).first
+          latin['typeface'] = typeface
         end
 
         run_properties = paragraph.xpath('.//a:rPr', a: DRAWING_NS).first
@@ -97,6 +99,12 @@ module PPTX
         end
 
         run_properties.prepend_child build_solid_fill(color) if color
+        p_properties.prepend_child build_bullet(bullet, bullet_color) if bullet
+        if bullet
+          p_properties["marL"] = "119863"
+          p_properties["indent"] = "-119863"
+        end
+
       end
     end
   end
