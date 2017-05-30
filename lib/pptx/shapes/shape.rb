@@ -53,6 +53,16 @@ module PPTX
 
         Nokogiri::XML::DocumentFragment.parse(bullet_xml)
       end
+
+      def build_after_space(val = 0)
+        after_space_xml = """
+        <a:spcAft>
+        <a:spcPts val='#{val}' />
+        </a:spcAft>
+        """
+
+        Nokogiri::XML::DocumentFragment.parse(after_space_xml)
+      end
     end
   end
 end

@@ -82,6 +82,7 @@ module PPTX
         typeface = formatting.delete(:typeface)
         bullet = formatting.delete(:bullet)
         bullet_color = formatting.delete(:bullet_color) rescue nil
+        after_spacing = formatting.delete(:after_spacing) rescue nil
 
         p_properties = paragraph.xpath('./a:p/a:pPr', a: DRAWING_NS).first
         if align
@@ -104,6 +105,7 @@ module PPTX
           p_properties["marL"] = "119863"
           p_properties["indent"] = "-119863"
         end
+        p_properties.prepend_child build_after_space(after_spacing) if after_spacing
 
       end
     end
