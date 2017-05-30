@@ -96,7 +96,7 @@ module PPTX
           run_properties[key] = val
         end
 
-        run_properties.add_child build_solid_fill(color) if color
+        run_properties.prepend_child build_solid_fill(color) if color
       end
     end
   end
